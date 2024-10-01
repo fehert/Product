@@ -19,7 +19,7 @@ namespace ProductApi
         public Connect()
         {
             Host = "localhost";
-            Database = "auto";
+            Database = "shop";
             Username = "root";
             Password = "";
             ConnectionString = "SERVER=" + Host + ";DATABASE=" + Database + ";UID=" + Username + ";PASSWORD=" + Password + ";SslMode=None";
