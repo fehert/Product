@@ -10,29 +10,31 @@ namespace ProductApi.Controllers
     {
         Connect con = new();
         [HttpGet]
-        public List<product> Get() {
+        public List<product> Get()
+        {
             List<product> products = new List<product>();
             con.Connection.Open();
             string sql = "SELECT * FROM products";
             MySqlCommand cmd = new MySqlCommand(sql, con.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
-            do {
+            do
+            {
                 var result = new product
                 {
                     Id = reader.GetGuid(0),
-                    Name=reader.GetString(1),
-                    Price=reader.GetInt32(2),
-                    CreatedTime=reader.GetDateTime(3),
+                    Name = reader.GetString(1),
+                    Price = reader.GetInt32(2),
+                    CreatedTime = reader.GetDateTime(3),
 
                 };
                 products.Add(result);
-                    }
-            
+            }
+
             while (reader.Read());
             con.Connection.Close();
             return products;
-                }
+        }
         [HttpPost]
         public product Post(string Name, int Price)
         {
@@ -52,7 +54,26 @@ namespace ProductApi.Controllers
             };
             return result;
         }
+        [HttpPut]
+        public product Put(Guid Id, string NewName, int NewPrice)
+        {
+            con.Connection.Open();
+            DateTime CreatedTime = DateTime.Now;
+            string sql = $"UPDATE `products` SET `Name`='{NewName}', `Price` = {NewPrice} WHERE `Id` = '{Id}'";
+            MySqlCommand cmd = new MySqlCommand(sql, con.Connection);
+            cmd.ExecuteNonQuery();
+            con.Connection.Close();
+            var result = new product
+            {
+                Id = Id,
+                Name = NewName,
+                Price = NewPrice,
+                CreatedTime = DateTime.Now
+            };
+            return result;
+
+        }
+
 
     }
-
 }
