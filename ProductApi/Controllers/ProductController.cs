@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductApi.Models;
 using MySql.Data.MySqlClient;
 namespace ProductApi.Controllers
+    //Fehér Tamás
 {
     [Route("product")]
     [ApiController]
@@ -73,7 +74,17 @@ namespace ProductApi.Controllers
             return result;
 
         }
-
-
+        [HttpDelete]
+        public string Delete(Guid Id)
+        {
+            con.Connection.Open();
+            DateTime CreatedTime = DateTime.Now;
+            string sql = $"DELETE FROM `products` WHERE `Id` = '{Id}'";
+            MySqlCommand cmd = new MySqlCommand(sql, con.Connection);
+            cmd.ExecuteNonQuery();
+            con.Connection.Close();
+            return $"{Id} elem törölve.";
+        }
     }
+
 }
